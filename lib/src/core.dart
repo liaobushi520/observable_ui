@@ -2,7 +2,12 @@ import 'dart:collection';
 
 import 'package:flutter/widgets.dart';
 
-mixin Observer<T extends StatefulWidget> on State<T> {
+abstract class Observer {
+  void onChanged();
+}
+
+mixin ObserverMixin<T extends StatefulWidget> on State<T> implements Observer {
+  @override
   void onChanged() {
     setState(() {});
   }
@@ -20,45 +25,15 @@ class ObservableList<T> with ListMixin<T>, Observable {
   }
 
   @override
-  void add(T element) {
-    super.add(element);
-    notifyObservers();
-  }
-
-  @override
-  T removeAt(int index) {
-    var r = super.removeAt(index);
-    notifyObservers();
-    return r;
-  }
-
-  @override
-  void addAll(Iterable<T> iterable) {
-    super.addAll(iterable);
-    notifyObservers();
-  }
-
-  @override
-  void clear() {
-    super.clear();
-    notifyObservers();
-  }
-
-  @override
-  bool remove(Object element) {
-    var r = super.remove(element);
-    notifyObservers();
-    return r;
-  }
-
-  @override
   void operator []=(int index, T value) {
     _value[index] = value;
+    notifyObservers();
   }
 
   @override
   set length(int newLength) {
     _value.length = newLength;
+    notifyObservers();
   }
 }
 
@@ -103,7 +78,7 @@ mixin Observable<T> {
 }
 
 abstract class StateMixinObserver<T extends StatefulWidget> extends State<T>
-    with Observer {
+    with ObserverMixin {
   List<Observable> _observables = [];
 
   List<Observable> collectObservables();

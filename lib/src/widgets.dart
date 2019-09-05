@@ -8,15 +8,14 @@ import 'core.dart';
 
 ///ObservableBridge
 class ObservableBridge extends StatefulWidget {
-
-  final Widget child;
+  final Widget Function(BuildContext context) childBuilder;
 
   final List<Observable> data;
 
-  const ObservableBridge({Key key, this.data, this.child}) : super(key: key);
+  const ObservableBridge({Key key, this.data, this.childBuilder}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() {
+  State<ObservableBridge> createState() {
     return ObservableBridgeState();
   }
 }
@@ -24,11 +23,15 @@ class ObservableBridge extends StatefulWidget {
 class ObservableBridgeState extends StateMixinObserver<ObservableBridge> {
   @override
   Widget build(BuildContext context) {
-    return widget.child;
+    return widget.childBuilder(context);
   }
 
   @override
-  List<Observable> collectObservables() => widget.data;
+  List<Observable> collectObservables() {
+    final observables = <Observable>[];
+    observables.addAll(widget.data);
+    return observables;
+  }
 }
 
 ///TextEx
