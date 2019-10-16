@@ -100,7 +100,7 @@ class EditableTextExState extends StateMixinObserver<EditableTextEx> {
     controller.text = this.widget.data.value;
     return EditableText(
       onChanged: (text) {
-        this.widget.data.setValue(text);
+        this.widget.data.value=text;
       },
       controller: controller,
       focusNode: this.widget.focusNode,
@@ -205,13 +205,23 @@ class ImageExState extends StateMixinObserver<ImageEx> {
 
 ///CheckBoxEx
 class CheckboxEx extends StatefulWidget {
-  final ObservableValue<bool> value;
-
-  final ValueChanged<bool> onChanged;
+  final ObservableValue<bool> data;
 
   final Color activeColor;
 
-  const CheckboxEx({Key key, this.value, this.onChanged, this.activeColor})
+  final bool tristate;
+
+  final Color checkColor;
+
+  final MaterialTapTargetSize materialTapTargetSize;
+
+  const CheckboxEx(
+      {Key key,
+      @required this.data,
+      this.activeColor,
+      this.tristate,
+      this.checkColor,
+      this.materialTapTargetSize})
       : super(key: key);
 
   @override
@@ -221,17 +231,22 @@ class CheckboxEx extends StatefulWidget {
 }
 
 class CheckboxExState extends StateMixinObserver<CheckboxEx> {
-  @override
-  List<Observable> collectObservables() => [this.widget.value];
 
   @override
   Widget build(BuildContext context) {
     return Checkbox(
-      value: this.widget.value.value,
-      onChanged: this.widget.onChanged,
+      value: this.widget.data.value,
+      onChanged: (v) {
+        this.widget.data.value=v;
+      },
       activeColor: this.widget.activeColor,
+      tristate: this.widget.tristate,
+      materialTapTargetSize: this.widget.materialTapTargetSize,
+      checkColor: this.widget.checkColor,
     );
   }
+  @override
+  List<Observable> collectObservables() => [this.widget.data];
 }
 
 ///FlatButtonEx

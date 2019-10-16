@@ -38,19 +38,22 @@ class ObservableList<T> with ListMixin<T>, Observable {
 }
 
 class ObservableValue<T> with Observable<T> {
-  T _value;
-
-  T get value => _value;
-
   ObservableValue(T initValue) {
     this._value = initValue;
   }
 
-  void setValue(T newValue,{notify:true}) {
+  T _oldValue;
+
+  T get oldValue => _oldValue;
+
+  T _value;
+
+  T get value => _value;
+
+  set value(newValue) {
+    _oldValue = _value;
     _value = newValue;
-    if(notify){
-      notifyObservers();
-    }
+    notifyObservers();
   }
 }
 
