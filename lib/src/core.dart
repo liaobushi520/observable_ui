@@ -46,9 +46,11 @@ class ObservableValue<T> with Observable<T> {
     this._value = initValue;
   }
 
-  void setValue(T newValue) {
+  void setValue(T newValue,{notify:true}) {
     _value = newValue;
-    notifyObservers();
+    if(notify){
+      notifyObservers();
+    }
   }
 }
 

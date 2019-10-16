@@ -1,10 +1,8 @@
-
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 import 'core.dart';
-
 
 ///ObservableBridge
 class ObservableBridge extends StatefulWidget {
@@ -12,7 +10,8 @@ class ObservableBridge extends StatefulWidget {
 
   final List<Observable> data;
 
-  const ObservableBridge({Key key, this.data, this.childBuilder}) : super(key: key);
+  const ObservableBridge({Key key, this.data, this.childBuilder})
+      : super(key: key);
 
   @override
   State<ObservableBridge> createState() {
@@ -51,6 +50,81 @@ class TextExState extends StateMixinObserver<TextEx> {
   @override
   Widget build(BuildContext context) {
     return Text(this.widget.data.value);
+  }
+
+  @override
+  List<Observable> collectObservables() => [this.widget.data];
+}
+
+///EditableTextEx
+class EditableTextEx extends StatefulWidget {
+  const EditableTextEx(
+      {Key key,
+      this.data,
+      @required this.focusNode,
+      @required this.cursorColor,
+      @required this.backgroundCursorColor,
+      @required this.style,
+      this.maxLines,
+      this.minLines,
+      this.textAlign})
+      : super(key: key);
+
+  final ObservableValue<String> data;
+
+  final FocusNode focusNode;
+
+  final Color cursorColor;
+
+  final Color backgroundCursorColor;
+
+  final TextStyle style;
+
+  final int maxLines;
+
+  final int minLines;
+
+  final TextAlign textAlign;
+
+  @override
+  State<StatefulWidget> createState() {
+    return EditableTextExState();
+  }
+}
+
+class EditableTextExState extends StateMixinObserver<EditableTextEx> {
+  final TextEditingController controller = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    controller.text = this.widget.data.value;
+    return EditableText(
+      onChanged: (text) {
+        this.widget.data.setValue(text);
+      },
+      controller: controller,
+      focusNode: this.widget.focusNode,
+      cursorColor: this.widget.cursorColor,
+      backgroundCursorColor: this.widget.backgroundCursorColor,
+      style: this.widget.style,
+      maxLines: this.widget.maxLines,
+      minLines: this.widget.minLines,
+      textAlign: this.widget.textAlign,
+    );
+  }
+
+  @override
+  void setState(fn) {
+    if (controller.text == this.widget.data.value) {
+      return;
+    }
+    super.setState(fn);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    controller.dispose();
   }
 
   @override
