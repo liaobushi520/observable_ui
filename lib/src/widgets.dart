@@ -132,20 +132,20 @@ class ImageExState extends StateMixinObserver<ImageEx> {
 }
 
 ///CheckBoxEx support two-way binding
-class CheckboxEx2 extends StatefulWidget {
+class CheckboxEx extends StatefulWidget {
   final Checkbox child;
 
   final ObservableValue<bool> data;
 
-  const CheckboxEx2({Key key, this.data, this.child}) : super(key: key);
+  const CheckboxEx({Key key, this.data, this.child}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
-    return _CheckboxExState2();
+    return _CheckboxExState();
   }
 }
 
-class _CheckboxExState2 extends StateMixinObserver<CheckboxEx2> {
+class _CheckboxExState extends StateMixinObserver<CheckboxEx> {
   Checkbox wrapperCheckbox;
 
   @override
