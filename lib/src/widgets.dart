@@ -166,7 +166,7 @@ class _CheckboxExState2 extends StateMixinObserver<CheckboxEx2> {
 
   @override
   Widget build(BuildContext context) {
-    return null;
+    return wrapperCheckbox;
   }
 
   @override
