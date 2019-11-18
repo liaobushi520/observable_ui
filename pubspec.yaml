@@ -1,7 +1,8 @@
 name: observable_ui
 description: a libray for databinding.
-version: 0.0.1
-author: liaobusi<2540257102@qq.com>
+version: 0.0.2
+#author: liaobusi<2540257102@qq.com>
+
 homepage: https://github.com/liaobushi520/observable_ui
 
 environment:

@@ -1,4 +1,6 @@
 import 'dart:io';
+
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -64,6 +66,13 @@ class EditableTextExState extends StateMixinObserver<EditableTextEx> {
       selectionControls: editableText.selectionControls,
       autofocus: editableText.autofocus,
       autocorrect: editableText.autocorrect,
+      paintCursorAboveText: editableText.paintCursorAboveText,
+      dragStartBehavior: editableText.dragStartBehavior,
+      enableSuggestions: editableText.enableSuggestions,
+      rendererIgnoresPointer: editableText.rendererIgnoresPointer,
+      minLines: editableText.minLines,
+      maxLines: editableText.maxLines,
+      forceLine: editableText.forceLine,
     );
   }
 
@@ -183,69 +192,72 @@ class _CheckboxExState extends StateMixinObserver<CheckboxEx> {
   }
 }
 
-
-
-///LinearProgressIndicator
-class LinearProgressIndicatorEx extends StatefulWidget {
-  final ObservableValue<double> value;
-
-  final Color backgroundColor;
-
-  const LinearProgressIndicatorEx({Key key, this.value, this.backgroundColor})
-      : super(key: key);
-
-  @override
-  State<StatefulWidget> createState() {
-    return LinearProgressIndicatorExState();
-  }
-}
-
-class LinearProgressIndicatorExState
-    extends StateMixinObserver<LinearProgressIndicatorEx> {
-  @override
-  Widget build(BuildContext context) {
-    return LinearProgressIndicator(
-      value: this.widget.value.value,
-      backgroundColor: this.widget.backgroundColor,
-    );
-  }
-
-  @override
-  List<Observable> collectObservables() => [this.widget.value];
-}
-
-
-
 ///ListViewEx
-typedef ItemWidgetBuilder<T> = Widget Function(BuildContext context, T item);
-
+///
 class ListViewEx<T> extends StatefulWidget {
-  const ListViewEx({this.items, @required this.itemBuilder});
-
   final ObservableList<T> items;
 
-  final ItemWidgetBuilder<T> itemBuilder;
+  final ListView child;
+
+  const ListViewEx({Key key, this.items, this.child}) : super(key: key);
+
+  ListViewEx.builder({
+    Key key,
+    this.items,
+    Axis scrollDirection = Axis.vertical,
+    bool reverse = false,
+    ScrollController controller,
+    bool primary,
+    ScrollPhysics physics,
+    bool shrinkWrap = false,
+    EdgeInsetsGeometry padding,
+    double itemExtent,
+    @required ItemWidgetBuilder itemBuilder,
+    int itemCount,
+    bool addAutomaticKeepAlives = true,
+    bool addRepaintBoundaries = true,
+    bool addSemanticIndexes = true,
+    double cacheExtent,
+    int semanticChildCount,
+    DragStartBehavior dragStartBehavior = DragStartBehavior.start,
+  })  : child = ListView.builder(
+          itemBuilder: (context, index) {
+            return itemBuilder(context, items[index]);
+          },
+          scrollDirection: scrollDirection,
+          reverse: reverse,
+          controller: controller,
+          primary: primary,
+          physics: physics,
+          shrinkWrap: shrinkWrap,
+          padding: padding,
+          itemCount: items.length,
+          addAutomaticKeepAlives: addAutomaticKeepAlives,
+          addRepaintBoundaries: addRepaintBoundaries,
+          addSemanticIndexes: addSemanticIndexes,
+          cacheExtent: cacheExtent,
+          semanticChildCount: semanticChildCount,
+          dragStartBehavior: dragStartBehavior,
+        ),
+        super(key: key);
 
   @override
   State<StatefulWidget> createState() {
-    return ListViewExState();
+    return _ListViewExState();
   }
 }
 
-class ListViewExState extends StateMixinObserver<ListViewEx> {
-  @override
-  List<Observable> collectObservables() => [this.widget.items];
-
+class _ListViewExState extends StateMixinObserver<ListViewEx> {
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemBuilder: (context, index) {
-        return this.widget.itemBuilder(context, this.widget.items[index]);
-      },
-      itemCount: this.widget.items.length,
-    );
+    return this.widget.child;
   }
+
+  @override
+  List<Observable> collectObservables() => [this.widget.items];
 }
+
+typedef ItemWidgetBuilder<T> = Widget Function(BuildContext context, T item);
 
 ///ExchangeEx  child1 visible when status is true
 class ExchangeEx extends StatefulWidget {
