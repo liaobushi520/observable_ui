@@ -193,13 +193,21 @@ class _CheckboxExState extends StateMixinObserver<CheckboxEx> {
 }
 
 ///ListViewEx
-///
+typedef ItemWidgetBuilder<T> = Widget Function(BuildContext context, T item);
+
+class _ListViewBuilder {
+  final WidgetBuilder builder;
+
+  _ListViewBuilder(this.builder);
+}
+
 class ListViewEx<T> extends StatefulWidget {
   final ObservableList<T> items;
 
-  final ListView child;
+  final _ListViewBuilder listViewBuilder;
 
-  const ListViewEx({Key key, this.items, this.child}) : super(key: key);
+  const ListViewEx({Key key, this.items, this.listViewBuilder})
+      : super(key: key);
 
   ListViewEx.builder({
     Key key,
@@ -220,25 +228,27 @@ class ListViewEx<T> extends StatefulWidget {
     double cacheExtent,
     int semanticChildCount,
     DragStartBehavior dragStartBehavior = DragStartBehavior.start,
-  })  : child = ListView.builder(
-          itemBuilder: (context, index) {
-            return itemBuilder(context, items[index]);
-          },
-          scrollDirection: scrollDirection,
-          reverse: reverse,
-          controller: controller,
-          primary: primary,
-          physics: physics,
-          shrinkWrap: shrinkWrap,
-          padding: padding,
-          itemCount: items.length,
-          addAutomaticKeepAlives: addAutomaticKeepAlives,
-          addRepaintBoundaries: addRepaintBoundaries,
-          addSemanticIndexes: addSemanticIndexes,
-          cacheExtent: cacheExtent,
-          semanticChildCount: semanticChildCount,
-          dragStartBehavior: dragStartBehavior,
-        ),
+  })  : listViewBuilder = _ListViewBuilder((context) {
+    return ListView.builder(
+      itemBuilder: (context, index) {
+        return itemBuilder(context, items[index]);
+      },
+      scrollDirection: scrollDirection,
+      reverse: reverse,
+      controller: controller,
+      primary: primary,
+      physics: physics,
+      shrinkWrap: shrinkWrap,
+      padding: padding,
+      itemCount: items.length,
+      addAutomaticKeepAlives: addAutomaticKeepAlives,
+      addRepaintBoundaries: addRepaintBoundaries,
+      addSemanticIndexes: addSemanticIndexes,
+      cacheExtent: cacheExtent,
+      semanticChildCount: semanticChildCount,
+      dragStartBehavior: dragStartBehavior,
+    );
+  }),
         super(key: key);
 
   @override
@@ -250,14 +260,12 @@ class ListViewEx<T> extends StatefulWidget {
 class _ListViewExState extends StateMixinObserver<ListViewEx> {
   @override
   Widget build(BuildContext context) {
-    return this.widget.child;
+    return this.widget.listViewBuilder.builder(context);
   }
 
   @override
   List<Observable> collectObservables() => [this.widget.items];
 }
-
-typedef ItemWidgetBuilder<T> = Widget Function(BuildContext context, T item);
 
 ///ExchangeEx  child1 visible when status is true
 class ExchangeEx extends StatefulWidget {

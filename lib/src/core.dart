@@ -37,7 +37,6 @@ class ObservableList<T> with ListMixin<T>, Observable {
   }
 }
 
-
 class ObservableValue<T> with Observable<T> {
   ObservableValue(T initValue) {
     this._value = initValue;
@@ -115,32 +114,28 @@ abstract class StateMixinObserver<T extends StatefulWidget> extends State<T>
 }
 
 ///ObservableBridge
+///ObservableBridge
 class ObservableBridge extends StatefulWidget {
   final Widget Function(BuildContext context) childBuilder;
 
-  final Widget child;
-
   final List<Observable> data;
 
-  const ObservableBridge({Key key,@required this.data, this.childBuilder,this.child})
-      :  assert(
-  child!= null || childBuilder!=null,
-  'Both child and childBuilder are null.',
-  ),super(key: key);
+  const ObservableBridge({Key key, @required this.data, this.childBuilder})
+      : assert(
+  childBuilder != null,
+  ' childBuilder are null.',
+  ),
+        super(key: key);
 
   @override
   State<ObservableBridge> createState() {
-    return ObservableBridgeState();
+    return _ObservableBridgeState();
   }
 }
 
-class ObservableBridgeState extends StateMixinObserver<ObservableBridge> {
+class _ObservableBridgeState extends StateMixinObserver<ObservableBridge> {
   @override
   Widget build(BuildContext context) {
-    if(widget.child!=null){
-      return widget.child;
-    }
-
     return widget.childBuilder(context);
   }
 
@@ -151,7 +146,3 @@ class ObservableBridgeState extends StateMixinObserver<ObservableBridge> {
     return observables;
   }
 }
-
-
-
-
