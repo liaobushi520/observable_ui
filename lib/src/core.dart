@@ -122,9 +122,9 @@ class ObservableBridge extends StatefulWidget {
 
   const ObservableBridge({Key key, @required this.data, this.childBuilder})
       : assert(
-  childBuilder != null,
-  ' childBuilder are null.',
-  ),
+          childBuilder != null,
+          ' childBuilder are null.',
+        ),
         super(key: key);
 
   @override

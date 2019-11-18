@@ -229,26 +229,26 @@ class ListViewEx<T> extends StatefulWidget {
     int semanticChildCount,
     DragStartBehavior dragStartBehavior = DragStartBehavior.start,
   })  : listViewBuilder = _ListViewBuilder((context) {
-    return ListView.builder(
-      itemBuilder: (context, index) {
-        return itemBuilder(context, items[index]);
-      },
-      scrollDirection: scrollDirection,
-      reverse: reverse,
-      controller: controller,
-      primary: primary,
-      physics: physics,
-      shrinkWrap: shrinkWrap,
-      padding: padding,
-      itemCount: items.length,
-      addAutomaticKeepAlives: addAutomaticKeepAlives,
-      addRepaintBoundaries: addRepaintBoundaries,
-      addSemanticIndexes: addSemanticIndexes,
-      cacheExtent: cacheExtent,
-      semanticChildCount: semanticChildCount,
-      dragStartBehavior: dragStartBehavior,
-    );
-  }),
+          return ListView.builder(
+            itemBuilder: (context, index) {
+              return itemBuilder(context, items[index]);
+            },
+            scrollDirection: scrollDirection,
+            reverse: reverse,
+            controller: controller,
+            primary: primary,
+            physics: physics,
+            shrinkWrap: shrinkWrap,
+            padding: padding,
+            itemCount: items.length,
+            addAutomaticKeepAlives: addAutomaticKeepAlives,
+            addRepaintBoundaries: addRepaintBoundaries,
+            addSemanticIndexes: addSemanticIndexes,
+            cacheExtent: cacheExtent,
+            semanticChildCount: semanticChildCount,
+            dragStartBehavior: dragStartBehavior,
+          );
+        }),
         super(key: key);
 
   @override
