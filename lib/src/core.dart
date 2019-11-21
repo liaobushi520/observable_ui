@@ -114,7 +114,6 @@ abstract class StateMixinObserver<T extends StatefulWidget> extends State<T>
 }
 
 ///ObservableBridge
-///ObservableBridge
 class ObservableBridge extends StatefulWidget {
   final Widget Function(BuildContext context) childBuilder;
 
